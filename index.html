@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lagoo – Louer, acheter, séjourner à Abidjan</title>
+<link rel="icon" type="image/svg+xml" href="img/favicon.svg">
+<meta name="description" content="Lagoo : annonces immobilières à Abidjan : locations, ventes et séjours courts, directement des propriétaires.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-in">
+    <a class="brand" href="#/" aria-label="Lagoo, accueil"><img class="brand-logo" src="img/mark.svg" alt="" width="34" height="34"><span class="brand-word">lag<b>oo</b></span></a>
+    <nav class="nav-main" aria-label="Navigation principale">
+      <a href="#/search?type=rent">Louer</a>
+      <a href="#/search?type=sale">Acheter</a>
+      <a href="#/search?type=short_stay">Séjours courts</a>
+    </nav>
+    <div class="nav-right" id="navRight"></div>
+    <button class="burger" id="burger" aria-label="Menu" aria-expanded="false">☰</button>
+  </div>
+  <div class="mobile-menu" id="mobileMenu"></div>
+</header>
+
+<div id="configBanner" class="config-banner" hidden></div>
+
+<main id="view" tabindex="-1"></main>
+
+<footer class="footer">
+  <div class="footer-in">
+    <div><strong>Lagoo</strong><br>Logements à Abidjan : locations, ventes et séjours courts.</div>
+    <div class="footer-links">
+      <a href="#/search?type=rent">Louer</a>
+      <a href="#/search?type=sale">Acheter</a>
+      <a href="#/search?type=short_stay">Séjours courts</a>
+      <a href="#/owners">Proposer mon bien</a>
+      <a href="#" onclick="openAuth('login');return false" id="adminLink">Espace équipe</a>
+    </div>
+  </div>
+</footer>
+
+<!-- Auth dialog -->
+<div class="overlay" id="authOverlay" hidden>
+  <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+    <button class="dialog-x" onclick="closeAuth()" aria-label="Fermer">✕</button>
+    <div id="authBody"></div>
+  </div>
+</div>
+
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/config.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
