@@ -1,118 +1,118 @@
-# Lagoo: setup, hosting and daily use (version 2)
+# Lagoo : installation, hébergement et utilisation
 
-A trusted property catalogue for Abidjan: **rentals, sales and short stays** (Airbnb-style, hotels, furnished residences).
+Un catalogue immobilier de confiance pour Abidjan : **locations, ventes et séjours courts** (type Airbnb, hôtels, résidences meublées).
 
-## How your business works on this site
+## Comment fonctionne votre activité sur ce site
 
-1. **An owner contacts you** (WhatsApp) and pays you to publish their property. This payment happens outside the site.
-2. **You publish the listing yourself** from the Administration area: photos, price, details, and the owner's contact (kept private).
-3. **A visitor finds the property** and sends a request (name + phone). They never see the owner's number, and they are never asked for money.
-4. **You check availability** with the owner. The Administration screen gives you one-tap Call / WhatsApp buttons for both sides, with a ready-written message.
-5. **You put them in touch**, and you track your commission on that request.
+1. **Un propriétaire vous contacte** (WhatsApp) et vous paie pour publier son bien. Ce paiement se fait en dehors du site.
+2. **Vous publiez l'annonce vous-même** depuis l'espace Administration : photos, prix, détails et contact du propriétaire (qui reste privé).
+3. **Un visiteur trouve le bien** et envoie une demande (nom + téléphone). Il ne voit jamais le numéro du propriétaire et on ne lui demande jamais d'argent.
+4. **Vous vérifiez la disponibilité** auprès du propriétaire. L'écran Administration vous donne des boutons Appeler / WhatsApp pour les deux côtés, avec un message déjà rédigé.
+5. **Vous les mettez en relation** et vous suivez votre commission sur cette demande.
 
-Owners cannot publish anything themselves. Only your admin account can.
+Les propriétaires ne peuvent rien publier eux-mêmes. Seul votre compte administrateur le peut.
 
 ```
-immo-abidjan/   (project folder; brand name: Lagoo)
-  img/mark.svg        logo (also the browser-tab icon)
-  index.html          the page shell
-  css/style.css       design
-  js/config.js        <- you paste your Supabase values + your WhatsApp number here
-  js/app.js           all the site logic (French interface), public site + admin area
-  supabase/schema.sql <- you run this once in Supabase
+immo-abidjan/   (dossier du projet ; nom de marque : Lagoo)
+  img/mark.svg        logo (aussi l'icône de l'onglet du navigateur)
+  index.html          la structure de la page
+  css/style.css       le design (couleurs en haut du fichier)
+  js/config.js        <- vous collez ici vos valeurs Supabase + votre numéro WhatsApp
+  js/app.js           toute la logique du site (interface en français), site public + administration
+  supabase/schema.sql <- à exécuter une seule fois dans Supabase
 ```
 
 ---
 
-## Setup
+## Installation
 
-### Step 1: Create the Supabase project (5 min)
-1. Go to **supabase.com**, sign up, click **New project**.
-2. Name it `immo-abidjan`, set a strong database password and save it.
-3. Choose the region **closest to Côte d'Ivoire** in the list. Wait ~2 minutes.
+### Étape 1 : créer le projet Supabase (5 min)
+1. Allez sur **supabase.com**, créez un compte, cliquez sur **New project**.
+2. Nommez-le `lagoo`, choisissez un mot de passe de base de données solide et notez-le.
+3. Choisissez la région **la plus proche de la Côte d'Ivoire** dans la liste. Attendez environ 2 minutes.
 
-### Step 2: Create the database (2 min)
-1. In Supabase open **SQL Editor, then New query**.
-2. Copy **all** of `supabase/schema.sql`, paste, click **Run**. You should see "Success".
-3. Safe to run again. If you already ran the *first* version of this file, running this one upgrades it automatically (it refuses to touch anything if real listings exist).
+### Étape 2 : créer la base de données (2 min)
+1. Dans Supabase, ouvrez **SQL Editor, puis New query**.
+2. Copiez **tout** le fichier `supabase/schema.sql`, collez-le, cliquez sur **Run**. Vous devez voir « Success ».
+3. On peut le relancer sans risque. Si vous aviez exécuté la *première* version de ce fichier, celle-ci la met à jour automatiquement (elle refuse de toucher à quoi que ce soit s'il existe déjà de vraies annonces).
 
-### Step 3: Connect the website (2 min)
-1. In Supabase: **Project Settings, then API** (or "API Keys"). Copy the **Project URL** and the **anon / publishable key**.
-2. Paste both into `js/config.js`.
-3. In the same file, put **your WhatsApp number** with the country code and digits only, for example `2250700000000`. It powers the "Nous écrire sur WhatsApp" buttons.
+### Étape 3 : connecter le site (2 min)
+1. Dans Supabase : **Project Settings, puis API** (ou « API Keys »). Copiez l'**URL du projet** et la clé **anon / publishable**.
+2. Collez les deux dans `js/config.js`.
+3. Dans le même fichier, indiquez **votre numéro WhatsApp** avec l'indicatif du pays, uniquement des chiffres, par exemple `2250700000000`. Il alimente les boutons « Nous écrire sur WhatsApp ».
 
-> The anon key is *meant* to be public: the database rules decide who can see or change what. **Never paste the `service_role` / secret key into the website.**
+> La clé anon est *faite* pour être publique : ce sont les règles de la base de données qui décident qui peut voir ou modifier quoi. **Ne collez jamais la clé `service_role` / secrète dans le site.**
 
-### Step 4: Login and email settings
-In Supabase: **Authentication**.
-- Keep **email confirmation** on (fewer fake accounts).
-- **URL Configuration**: set **Site URL** to your final address and add `http://localhost:8000` under **Redirect URLs** while testing.
-- **Before launch, set up custom SMTP** (Authentication, then SMTP Settings) with a service like Resend or Brevo. Supabase's built-in sender is for testing only and is heavily rate-limited, so confirmation emails may not arrive.
+### Étape 4 : connexion et e-mails
+Dans Supabase : **Authentication**.
+- Gardez la **confirmation par e-mail** activée (moins de faux comptes).
+- **URL Configuration** : indiquez votre adresse finale dans **Site URL** et ajoutez `http://localhost:8000` dans **Redirect URLs** pendant les tests.
+- **Avant le lancement, configurez un SMTP personnalisé** (Authentication, puis SMTP Settings) avec un service comme Resend ou Brevo. L'envoi intégré de Supabase sert uniquement aux tests et il est très limité : les e-mails de confirmation risquent de ne pas arriver.
 
-### Step 5: Test on your computer
-In a terminal, inside the `immo-abidjan` folder:
+### Étape 5 : tester sur votre ordinateur
+Dans un terminal, à l'intérieur du dossier `immo-abidjan` :
 ```
 python3 -m http.server 8000
 ```
-Open **http://localhost:8000**.
+Ouvrez **http://localhost:8000**.
 
-### Step 6: Make yourself the administrator (once)
-1. On the site, click **Connexion, then Créer un compte**, and sign up with your own email (confirm it if asked).
-2. In Supabase **SQL Editor**, run this with your email:
+### Étape 6 : devenir administrateur (une seule fois)
+1. Sur le site, descendez en bas de page et cliquez sur **Espace équipe**, puis **Créer un compte**, et inscrivez-vous avec votre propre e-mail (confirmez-le si on vous le demande).
+2. Dans Supabase **SQL Editor**, exécutez ceci avec votre e-mail :
 ```sql
 update public.profiles set role = 'admin'
-where id = (select id from auth.users where email = 'YOUR-EMAIL@example.com');
+where id = (select id from auth.users where email = 'VOTRE-EMAIL@exemple.com');
 ```
-3. Reload the site and log in. You now see an **Administration** button. Nobody else gets one, and there is no way to promote yourself from the website.
+3. Rechargez le site et connectez-vous (toujours par **Espace équipe**). Vous voyez maintenant le bouton **Administration**. Personne d'autre ne l'a, et il est impossible de se promouvoir administrateur depuis le site.
 
-### Step 7: Put it online (free)
-- **Netlify**: go to app.netlify.com/drop and drag the `immo-abidjan` folder onto the page.
-- **Cloudflare Pages**: Workers & Pages, Create, Pages, Upload assets. Vercel and GitHub Pages also work.
+### Étape 7 : mettre en ligne (gratuit)
+- **Netlify** : allez sur app.netlify.com/drop et glissez le dossier `immo-abidjan` sur la page.
+- **Cloudflare Pages** : Workers & Pages, Create, Pages, Upload assets. Vercel et GitHub Pages fonctionnent aussi.
 
-Then add the address you get to Supabase **Redirect URLs** (Step 4).
+Ajoutez ensuite l'adresse obtenue dans les **Redirect URLs** de Supabase (étape 4).
 
-### Step 8: Your own domain
-1. Buy a domain (Namecheap, Cloudflare Registrar, Gandi...). For a `.ci`, check the registry (nic.ci) for accredited registrars and requirements.
-2. In your host, **Domain settings, Add custom domain**, then create the DNS records it shows at your registrar.
-3. After DNS updates (minutes to hours), set the Supabase **Site URL** to your new domain.
+### Étape 8 : votre propre nom de domaine
+1. Achetez un domaine (Namecheap, Cloudflare Registrar, Gandi...). Pour un `.ci`, renseignez-vous auprès du registre (nic.ci) sur les bureaux d'enregistrement agréés et les conditions.
+2. Chez votre hébergeur, **Domain settings, Add custom domain**, puis créez les enregistrements DNS indiqués chez votre registraire.
+3. Une fois les DNS à jour (quelques minutes à quelques heures), mettez votre nouveau domaine dans **Site URL** de Supabase.
 
-### Costs and limits: check before launch
-Supabase and the hosts above have free tiers, but limits (database size, file storage, users, and **free projects pausing after a period of inactivity**) change. Check **supabase.com/pricing** before going live. Photos are shrunk in the browser (max 1600 px) to save storage.
-
----
-
-## Look and login
-
-The design is plain white with orange as a small accent and green on action buttons (buttons that act: "Proposer mon bien", "Envoyer ma demande"). To change them, edit the first lines of `css/style.css`. Visitors see no login button: they never need an account. **You log in through "Espace équipe" in the footer**, then the Administration button appears.
-
-## Daily use (Administration area)
-
-- **Demandes**: every visitor request, newest first, with a red counter for new ones. Per request: change the status (Nouvelle, Vérification propriétaire, Disponible, Mise en relation faite, Conclue, Perdue), record your **commission** and whether it is **paid**, add private notes. The top shows **À encaisser** (owed to you) and **Encaissé** (received).
-- **Annonces**: all listings. Edit, pause, delete. Each has a **"payée jusqu'au"** date: the listing disappears from the public site automatically after it, so you can sell listing periods (for example 1 or 3 months) and renew by changing the date.
-- **Propriétaires**: your private address book of owners, with notes such as the fee you agreed.
-- **Region filters for visitors**: they pick a **commune** (Cocody, Bingerville, Yopougon...), then a **quartier** (Angré, Riviera 3...). The quartier list shows only quartiers that really have listings, with a count, and is shareable as a link. It groups by exact spelling, so **choose the quartier from the suggestions** in the form (they follow the commune you pick) and write it the same way every time ("Angré", not "Angre").
-- **Home page search**: a visitor types a commune or quartier and gets suggestions as they type (accents ignored: "adjame" finds Adjamé), then can pick a budget and bedrooms. The layout follows the familiar big-portal pattern (search card with tabs) without copying anyone's branding.
-- **Budget slider for visitors**: after choosing Location, Vente or Séjour court, a two-handle slider appears (min and max). Its range is built from the real prices in your listings, so it always fits. Rent is per month, sale is a total, short stay is per night, so the slider only works inside one type (otherwise 45 000 per night and 45 000 000 for a sale would be mixed up). It is shareable in the link.
-- **+ Nouvelle annonce**: a short form. You can add the owner on the spot. Tick **"Bien vérifié"** only when you really checked the property: it shows a green "✓ Vérifié" badge, which is what visitors will learn to trust.
-
-## Protecting your reputation and your income
-
-- **Never take money from visitors, and never let anyone else publish.** The site says this on the home page and on every listing. That promise is your whole brand, so keep it true.
-- **Release owner contacts only after the owner confirms availability** (step 4 above). That is how you stay the necessary middleman.
-- **Agree your fee with the owner in writing before you introduce anyone.** A WhatsApp message is enough: what you charge, and when it is due (on signing, on move-in, or per booking). Record it in the owner's notes. Without a prior agreement, collecting after an introduction is hard.
-- **Check the local rules.** Acting as an intermediary in property may require a licence or registration in Côte d'Ivoire. I am not a lawyer, so ask a local professional, and have Terms and Privacy pages reviewed locally before launch.
-- If your process differs from the three trust messages on the home page, edit that text in `js/app.js` (search for "Annonces publiées par notre équipe").
+### Coûts et limites : à vérifier avant le lancement
+Supabase et les hébergeurs ci-dessus ont des offres gratuites, mais les limites (taille de la base, stockage des fichiers, nombre d'utilisateurs, et **mise en pause des projets gratuits après une période d'inactivité**) changent. Consultez **supabase.com/pricing** avant de lancer. Les photos sont réduites dans le navigateur (1600 px maximum) pour économiser le stockage.
 
 ---
 
-## What was tested
+## Apparence et connexion
 
-- **Database**: `schema.sql` was run on a real PostgreSQL 16 (with stand-ins for Supabase's login and storage parts), including re-running it, upgrading from the first version, and refusing to overwrite real data. Security rules were attacked as different users: visitors cannot read requests or owner contacts, cannot set their own status or commission, cannot spoof another user, and cannot publish or upload; strangers cannot make themselves admin; expired and paused listings disappear and stop receiving requests; owner phone numbers and internal notes are not in the public view.
-- **Website**: the real `index.html` and `js/app.js` were loaded in a simulated browser against a fake database and walked through 96 checks (including the region filters and the budget slider) (visitor browsing and search, request form with spam trap, admin guard, request tracker, listing editor with photos, owners). I also broke the code on purpose twice to confirm the checks catch real bugs.
-- **Not tested**: it has not yet been run in a real browser against a live Supabase project, so expect a short first test pass (Steps 5 and 6), including photo upload from a phone. Tell me what looks off.
+Le design est tout blanc, avec l'orange comme petite touche et le vert sur les boutons d'action (« Proposer mon bien », « Envoyer ma demande »). Pour changer les couleurs, modifiez les premières lignes de `css/style.css`. Les visiteurs n'ont aucun bouton de connexion : ils n'ont jamais besoin de compte. **Vous vous connectez par « Espace équipe » en bas de page**, puis le bouton Administration apparaît.
 
-## Not included yet (good next steps)
+## Utilisation au quotidien (espace Administration)
 
-- **Alert when a new request arrives** (an email or WhatsApp to you). Today you see the red counter when you open Administration, so check it often. I can add an email alert.
-- **Automatic payment of listing fees** (Orange Money / MTN / Wave through an aggregator). Today you record payments yourself with the "payée jusqu'au" date.
-- A "report this listing" button, a captcha if spam appears, a map view, an English toggle.
+- **Demandes** : toutes les demandes des visiteurs, les plus récentes d'abord, avec un compteur rouge pour les nouvelles. Pour chaque demande : changez le statut (Nouvelle, Vérification propriétaire, Disponible, Mise en relation faite, Conclue, Perdue), notez votre **commission** et si elle est **payée**, ajoutez des notes privées. En haut : **À encaisser** (ce qu'on vous doit) et **Encaissé** (ce que vous avez reçu).
+- **Annonces** : toutes les annonces. Modifier, mettre en pause, supprimer. Chacune a une date **« payée jusqu'au »** : l'annonce disparaît automatiquement du site public après cette date, ce qui vous permet de vendre des périodes de publication (par exemple 1 ou 3 mois) et de renouveler en changeant la date.
+- **Propriétaires** : votre carnet d'adresses privé des propriétaires, avec des notes comme les frais convenus.
+- **Filtres par région pour les visiteurs** : ils choisissent une **commune** (Cocody, Bingerville, Yopougon...), puis un **quartier** (Angré, Riviera 3...). La liste des quartiers n'affiche que ceux qui ont vraiment des annonces, avec leur nombre, et se partage par lien. Les quartiers sont regroupés selon l'orthographe exacte : **choisissez donc le quartier dans les suggestions** du formulaire (elles suivent la commune choisie) et écrivez-le toujours pareil (« Angré », pas « Angre »).
+- **Recherche de la page d'accueil** : le visiteur tape une commune ou un quartier et reçoit des suggestions pendant la frappe (les accents sont ignorés : « adjame » trouve Adjamé), puis peut choisir un budget et un nombre de chambres. La disposition suit le modèle classique des grands portails (carte de recherche avec onglets), sans copier la marque de personne.
+- **Curseur de budget pour les visiteurs** : après avoir choisi Louer, Acheter ou Séjours courts, un curseur à deux poignées apparaît (minimum et maximum). Sa plage est calculée à partir des vrais prix de vos annonces, elle est donc toujours adaptée. Un loyer est mensuel, une vente est un prix total, un séjour court est par nuit : le curseur ne fonctionne donc qu'à l'intérieur d'un seul type (sinon 45 000 par nuit et 45 000 000 pour une vente seraient mélangés). Il se partage dans le lien.
+- **+ Nouvelle annonce** : un formulaire court. Vous pouvez ajouter le propriétaire sur place. Cochez **« Bien vérifié »** seulement si vous avez vraiment vérifié le bien : cela affiche un badge vert « ✓ Vérifié », en lequel les visiteurs apprendront à avoir confiance.
+
+## Protéger votre réputation et vos revenus
+
+- **Ne prenez jamais d'argent aux visiteurs et ne laissez personne d'autre publier.** Le site le dit sur la page d'accueil et sur chaque annonce. Cette promesse est toute votre marque : tenez-la.
+- **Ne communiquez le contact du propriétaire qu'après sa confirmation de disponibilité** (étape 4 ci-dessus). C'est ainsi que vous restez l'intermédiaire indispensable.
+- **Convenez de vos frais avec le propriétaire par écrit avant de mettre quiconque en relation.** Un message WhatsApp suffit : ce que vous facturez et quand c'est dû (à la signature, à l'emménagement, ou par réservation). Notez-le dans les notes du propriétaire. Sans accord préalable, il est difficile de réclamer son dû après une mise en relation.
+- **Vérifiez la réglementation locale.** Faire l'intermédiaire en immobilier peut exiger une licence ou un enregistrement en Côte d'Ivoire. Je ne suis pas juriste : demandez conseil à un professionnel local et faites relire les mentions légales et la politique de confidentialité localement avant le lancement.
+- Si votre façon de procéder diffère des trois messages de confiance de la page d'accueil, modifiez ce texte dans `js/app.js` (cherchez « Annonces publiées par notre équipe »).
+
+---
+
+## Ce qui a été testé
+
+- **Base de données** : `schema.sql` a été exécuté sur un vrai PostgreSQL 16 (avec des équivalents pour les parties connexion et stockage de Supabase), y compris sa relance, la mise à jour depuis la première version et le refus d'écraser de vraies données. Les règles de sécurité ont été attaquées avec différents utilisateurs : les visiteurs ne peuvent pas lire les demandes ni les contacts des propriétaires, ne peuvent pas fixer leur propre statut ou commission, ne peuvent pas usurper un autre utilisateur, et ne peuvent ni publier ni téléverser ; un inconnu ne peut pas se faire administrateur ; les annonces expirées ou en pause disparaissent et ne reçoivent plus de demandes ; les téléphones des propriétaires et les notes internes ne figurent pas dans la vue publique.
+- **Site web** : les vrais `index.html` et `js/app.js` ont été chargés dans un navigateur simulé avec une fausse base de données et passés par 96 vérifications (navigation et recherche des visiteurs, filtres par région, curseur de budget, recherche de la page d'accueil, formulaire de demande avec piège anti-spam, protection de l'administration, suivi des demandes, éditeur d'annonces avec photos, propriétaires). J'ai aussi cassé volontairement le code deux fois pour confirmer que les vérifications détectent de vrais bogues.
+- **Non testé** : le site n'a pas encore tourné dans un vrai navigateur avec un vrai projet Supabase. Prévoyez donc un premier essai (étapes 5 et 6), y compris l'envoi de photos depuis un téléphone. Dites-moi ce qui ne va pas.
+
+## Pas encore inclus (bonnes prochaines étapes)
+
+- **Alerte à l'arrivée d'une nouvelle demande** (un e-mail ou un message WhatsApp pour vous). Aujourd'hui vous voyez le compteur rouge en ouvrant l'Administration : consultez-la souvent. Je peux ajouter une alerte par e-mail.
+- **Paiement automatique des frais de publication** (Orange Money / MTN / Wave via un agrégateur). Aujourd'hui vous enregistrez les paiements vous-même avec la date « payée jusqu'au ».
+- Un bouton « signaler cette annonce », un captcha si du spam apparaît, une vue carte, un bouton de langue anglaise.

@@ -8,5 +8,5 @@
 window.APP_CONFIG = {
   SUPABASE_URL: "https://tmimrfjnortjuvxsjwco.supabase.co",
   SUPABASE_ANON_KEY: "sb_publishable_IMTAuj4Op8xSoDrc8vHVmg_S_SDQFof",
-  WHATSAPP_NUMBER: "225XXXXXXXXXX"
+  WHATSAPP_NUMBER: "2250778720687"
 };
