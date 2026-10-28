@@ -28,7 +28,7 @@ const QUARTIERS_BY_COMMUNE = {
   'Plateau': ['Plateau Centre']
 };
 const LISTING_TYPES = { rent: 'Location', sale: 'Vente', short_stay: 'Séjour court' };
-const PROPERTY_TYPES = { apartment: 'Appartement', villa: 'Villa', studio: 'Studio', house: 'Maison', room: 'Chambre', hotel: 'Hôtel', residence: 'Résidence meublée', land: 'Terrain', office: 'Bureau' };
+const PROPERTY_TYPES = { apartment: 'Appartement', villa: 'Villa', studio: 'Studio', house: 'Maison', room: 'Chambre', hotel: 'Hôtel', residence: 'Résidence meublée', land: 'Terrain', shop: 'Boutique / magasin', office: 'Bureau', warehouse: 'Entrepôt / dépôt' };
 const AMENITIES = { wifi: 'WiFi', parking: 'Parking', pool: 'Piscine', security: 'Gardiennage', generator: 'Groupe électrogène', ac: 'Climatisation', water: 'Eau 24h/24', balcony: 'Balcon', garden: 'Jardin', gym: 'Salle de sport', kitchen: 'Cuisine équipée', tv: 'TV / Canal+' };
 const LEAD_STATUS = { new: 'Nouvelle', checking: 'Vérification propriétaire', available: 'Disponible', introduced: 'Mise en relation faite', signed: 'Conclue', lost: 'Perdue' };
 const OPEN_LEADS = ['new', 'checking', 'available', 'introduced'];
@@ -115,7 +115,7 @@ function updateNav() {
   const right = document.getElementById('navRight');
   const mm = document.getElementById('mobileMenu');
   const first = (profile?.full_name || user?.email || '').split(' ')[0];
-  const common = `<a href="#/search?type=rent">Louer</a><a href="#/search?type=sale">Acheter</a><a href="#/search?type=short_stay">Séjours courts</a><a href="#/owners">Proposer mon bien</a>`;
+  const common = `<a href="#/search?type=rent">Louer</a><a href="#/search?type=sale">Acheter</a><a href="#/search?type=short_stay">Séjours courts</a><a href="#/search?ptype=shop">Boutiques</a><a href="#/owners">Proposer mon bien</a>`;
   if (user) {
     right.innerHTML = `
       ${isAdmin() ? '<a class="btn btn-teal btn-sm" href="#/admin">Administration<span class="badge" id="newleads" hidden></span></a>' : ''}
@@ -342,7 +342,7 @@ async function viewHome() {
       </div></section>
     </div>`;
   heroType = 'rent';
-  const HERO_BUDGETS = { rent: [50000, 100000, 150000, 200000, 300000, 500000, 1000000], sale: [10000000, 25000000, 50000000, 100000000, 200000000, 500000000], short_stay: [15000, 25000, 40000, 60000, 100000, 150000] };
+  const HERO_BUDGETS = { rent: [50000, 100000, 150000, 200000, 300000, 500000, 1000000], sale: [10000000, 25000000, 50000000, 100000000, 200000000, 500000000], short_stay: [15000, 25000, 40000, 60000, 100000, 150000, 250000, 450000] };
   const HERO_TITLES = { rent: 'Rechercher des biens à louer', sale: 'Rechercher des biens à acheter', short_stay: 'Rechercher un séjour court' };
   const fillBudget = () => {
     const unitTxt = unit(heroType);
